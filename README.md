@@ -11,11 +11,11 @@ Everyone deserves an education but not everyone has the time, resources, or acce
 ## What it does
 A "Byte" sized coding academy that allows users to learn coding incrementally through micro-lessons and earning microbadges towards microcredentials. Everything is tiny in this UNIVERSItiny. 
 
-Users are given tiny lessons through messenger followed by tiny coding challenges to show proficiency.
+* Users are given tiny lessons through messenger followed by tiny coding challenges to show proficiency.
 
-Once users show proficiency for their tiny challenge, they are given a tiny badge and move on to the next lesson and challenge. 
+* Once users show proficiency for their tiny challenge, they are given a tiny badge and move on to the next lesson and challenge. 
 
-With enough challenges completed users earn tiny cridentials. 
+* With enough challenges completed users earn tiny cridentials. 
 
 ## List your Chatbot’s features and use cases
 1. 1
