@@ -40,7 +40,7 @@ Tech Stack & Documentation:
 * Learning 2
 
 
-## What's next for “Insert Your Bot Name”
+## What's next for UNIVERSItiny
 Product Roadmap - next features for example
 1. Feature 1
 1. Feature 2
