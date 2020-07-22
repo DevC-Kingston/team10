@@ -19,7 +19,7 @@ def handle_verification():
 
 #Handles text Interaction
 def getResponse(message_text):
-    return 'ok'
+    return 'This is a test'
 
 @app.route('/', methods=['POST'])
 def handle_messages():
