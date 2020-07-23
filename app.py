@@ -4,7 +4,7 @@ from flask import Flask, request
 from pymessenger.bot import Bot
 
 app = Flask(__name__)
-ACCESS_TOKEN = 'EAAIqi3w9daYBAIaPFlw9Epqc7h7oXB7m2F4yuZCL5SldwfZAY0VBTaD4wrfoJZCwa0uLQMisvL3HmRiUKaKhquZAJ1ke4sJ7wFMZBxz62TZBQV2ezeOCxPuVGFyb3GJ9Yd0ZCoBVZASgWqXS4qPeuQeaZCkOw7m3B5A0ZAqdaXrRZCnzbw8Tz3ZBKxYZCUSc93VQVnK8ZD'
+ACCESS_TOKEN = 'EAAJ8sJvUO8IBAMaQdcsxMxzcmA2wRNxMHqYXZBazpKyJ55eodxIcB0TsgQY38tyAp1yZA9aFOm2Qw5I0GcTk0SLAZAUCEwUt3AODFAU4CmekDtxDPrIWOZBZBGbuNi7D3CZBVnF0ZBOazqRWlMVvxBiCRderfL1l2LUEjs8CKWZCDpDJORxVjnaDb638EYa1aC0ZD'
 VERIFY_TOKEN = 'TESTINGTOKEN'
 bot = Bot(ACCESS_TOKEN)
 
@@ -20,19 +20,21 @@ def receive_message():
     else:
         # get whatever message a user sent the bot
        output = request.get_json()
+       print(output)
        for event in output['entry']:
           messaging = event['messaging']
           for message in messaging:
             if message.get('message'):
                 #Facebook Messenger ID for user so we know where to send response back to
                 recipient_id = message['sender']['id']
-                if message['message'].get('text'):
-                    response_sent_text = get_message()
-                    send_message(recipient_id, response_sent_text)
+                message_text = message['message'].get('text')
+                if message_text:
+                    response_sent_text = get_message(recipient_id, message_text)
+                    # send_message(recipient_id, response_sent_text)
                 #if user sends us a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
-                    response_sent_nontext = get_message()
-                    send_message(recipient_id, response_sent_nontext)
+                    response_sent_nontext = get_message(recipient_id, message_text)
+                    # send_message(recipient_id, response_sent_nontext)
     return "Message Processed"
 
 
@@ -43,13 +45,32 @@ def verify_fb_token(token_sent):
         return request.args.get("hub.challenge")
     return 'Invalid verification token'
 
+def Story(recipient_id):
+
+    story = 'Hay un muchacho. Muchacho means boy.'
+    part2 = 'Question (pregunta): How do you say boy en español? ¿Muchacho o muchacha?'
+
+    return send_message(recipient_id,story),send_message(recipient_id,part2)
+
+def instructions(recipient_id):
+    response = 'Sometimes I’m going to tell you things and sometimes I’m going to ask you things. It’s okay if you don’t know all of the words. You’ll get a lot of repeticiones. That’s repetitions. Also you’ll notice that many words are the same or similar in English and Spanish like chocolate 🍫 televisión 📺 and música 🎶'
+    return send_message(recipient_id, response)
 
 #chooses a random message to send to the user
-def get_message():
+def get_message(recipient_id,text):
     sample_responses = ["Hola. Me llamo Shannon. Soy tu profesora.  That means I’m your teacher", 
     "We're proud of you.", "Keep on being you!", "We're greatful to know you :)"]
-    # return selected item to the user
-    return random.choice(sample_responses)
+    print(text)
+    if text == 'Yes' or text == 'yes':
+        return send_message(recipient_id,'Today I’m going to tell you a story (un cuento). Is that okay? ¿Sí o no?')
+    elif text == 'Si' or text == 'si':
+        return send_message(recipient_id,'Fantástico!'),instructions(recipient_id),Story(recipient_id)
+    elif text == 'no' or text == 'No':
+        return send_message(recipient_id,'está bien. That’s okay. Let’s start whenever you’re ready')
+    elif text == 'muchacho' or text == 'Muchacho':
+        return send_message(recipient_id,'sí: ¡Excelente! You answered your first question! Sí. Hay un muchacho')
+    elif text == 'muchacha' or text == 'Muchacha':
+        return send_message(recipient_id,'try again. ¿Muchacho o muchacha?')
 
 #uses PyMessenger to send response to user
 def send_message(recipient_id, response):
